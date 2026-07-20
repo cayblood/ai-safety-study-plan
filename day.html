@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Log — AI Safety Study Plan</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <h1 id="day-title">Daily Log</h1>
+    <p class="day-meta" id="day-meta"></p>
+    <nav class="site-nav">
+      <a href="index.html">← Back to log</a>
+    </nav>
+  </header>
+
+  <div id="video-slot"></div>
+  <article class="note-body" id="note"></article>
+
+  <footer class="site-footer">
+    <a href="index.html">← Back to the full timeline</a>
+  </footer>
+</div>
+
+<script src="assets/marked.min.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const date = params.get("date");
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    document.getElementById("note").innerHTML = '<p class="empty-state">No date specified.</p>';
+    return;
+  }
+
+  document.getElementById("day-title").textContent = parseISO(date).toLocaleDateString("en", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  });
+  document.title = `${date} — AI Safety Study Log`;
+
+  const { byDate } = await loadLog();
+  const entry = byDate[date];
+
+  if (entry && entry.video) {
+    const slot = document.getElementById("video-slot");
+    const video = document.createElement("video");
+    video.className = "day-video";
+    video.src = entry.video;
+    video.controls = true;
+    video.muted = true;
+    video.playsInline = true;
+    slot.appendChild(video);
+  }
+
+  if (entry && entry.hours) {
+    document.getElementById("day-meta").textContent =
+      `${entry.hours} hours logged` + (entry.summary ? ` — ${entry.summary}` : "");
+  }
+
+  await renderNoteInto(document.getElementById("note"), `notes/${date}.md`);
+})();
+</script>
+</body>
+</html>

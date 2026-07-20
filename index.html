@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Safety Study Log</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <h1>AI Safety Study Log</h1>
+    <p class="tagline">Daily progress toward a career in AI safety research — ML foundations, mechanistic interpretability, and philosophy.</p>
+    <nav class="site-nav">
+      <a href="index.html">Log</a>
+      <a href="plan.html?doc=00-overview">Study Plan</a>
+      <a href="plan.html?doc=01-ml-foundations">ML Foundations</a>
+      <a href="plan.html?doc=02-mech-interp">Mech Interp</a>
+      <a href="plan.html?doc=03-philosophy">Philosophy</a>
+      <a href="https://github.com/cayblood/ai-safety-study-plan">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat"><div class="value" id="stat-current">–</div><div class="label">Current streak</div></div>
+    <div class="stat"><div class="value" id="stat-longest">–</div><div class="label">Longest streak</div></div>
+    <div class="stat"><div class="value" id="stat-total">–</div><div class="label">Days logged</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Session timeline</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">One dot per weekday. Click a filled dot to see that day's notes and timelapse.</p>
+    <div class="timeline-wrap"><div id="timeline"></div></div>
+    <div class="legend">
+      Less
+      <span class="dot"></span>
+      <span class="dot l1"></span>
+      <span class="dot l2"></span>
+      <span class="dot l3"></span>
+      <span class="dot l4"></span>
+      More
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Recent sessions</h2>
+    <ul class="recent-list" id="recent"></ul>
+  </div>
+
+  <footer class="site-footer">
+    Built as a public accountability log. Follow along on <a href="https://x.com/carlyoungblood">X</a>.
+  </footer>
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+(async () => {
+  const { entries, byDate } = await loadLog();
+
+  const startDate = entries.length ? entries.map(e => e.date).sort()[0] : null;
+  renderTimeline(document.getElementById("timeline"), byDate, startDate);
+
+  const { current, longest, total } = computeStreaks(byDate);
+  document.getElementById("stat-current").textContent = current;
+  document.getElementById("stat-longest").textContent = longest;
+  document.getElementById("stat-total").textContent = total;
+
+  const recent = document.getElementById("recent");
+  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
+  if (!sorted.length) {
+    recent.innerHTML = '<li class="empty-state">No sessions logged yet. Run scripts/new-day.sh to start.</li>';
+  } else {
+    for (const e of sorted) {
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="date">${e.date}</span> <a href="day.html?date=${e.date}">${e.summary || "Session notes"}</a>`;
+      recent.appendChild(li);
+    }
+  }
+})();
+</script>
+</body>
+</html>

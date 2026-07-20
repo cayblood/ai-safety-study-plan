@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Plan — AI Safety Study Log</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="container">
+  <header class="site-header">
+    <h1>Study Plan</h1>
+    <nav class="site-nav">
+      <a href="index.html">Log</a>
+      <a href="plan.html?doc=00-overview">Overview</a>
+      <a href="plan.html?doc=01-ml-foundations">ML Foundations</a>
+      <a href="plan.html?doc=02-mech-interp">Mech Interp</a>
+      <a href="plan.html?doc=03-philosophy">Philosophy</a>
+    </nav>
+  </header>
+
+  <article class="note-body" id="doc"></article>
+
+  <footer class="site-footer">
+    <a href="index.html">← Back to the log</a>
+  </footer>
+</div>
+
+<script src="assets/marked.min.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const doc = (params.get("doc") || "00-overview").replace(/[^a-z0-9-]/gi, "");
+  await renderNoteInto(document.getElementById("doc"), `plan/${doc}.md`);
+})();
+</script>
+</body>
+</html>

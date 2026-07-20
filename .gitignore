@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Raw session recordings (large; only compressed timelapses are committed)
+recordings/*
+!recordings/.gitkeep
+
+# OS noise
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
