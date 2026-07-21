@@ -20,6 +20,18 @@ scripts/end-day.sh          # timelapse → log.json → commit+push → X post
 
 Each step is also runnable on its own: `make-timelapse.sh`, `update_log.py`, `post_to_x.py` all take an optional `YYYY-MM-DD` argument.
 
+## Flashcards
+
+Capture quizzable facts as one-liners anywhere in a daily note (the template has a `## Cards` section):
+
+```markdown
+- What does activation patching measure? :: Causal effect of swapping in a corrupted activation
+- cloze :: The {{c1::residual stream}} carries information between layers
+- SVD of M :: $U \Sigma V^T$
+```
+
+`scripts/make_deck.py` (run automatically by `end-day.sh`) sweeps every note into `data/study-deck.apkg` — import into [Anki](https://apps.ankiweb.net) with File → Import. Card identity is keyed on the question, so re-importing updates cards instead of duplicating them, and scheduling progress is preserved. Weekly ritual: have an LLM draft cards from the day's note, and run a harsh-grader oral quiz on Fridays (prompts documented in CLAUDE.md).
+
 ## One-time setup
 
 1. **ffmpeg** — `brew install ffmpeg` (screen-capture permission: System Settings → Privacy & Security → Screen Recording → allow your terminal).

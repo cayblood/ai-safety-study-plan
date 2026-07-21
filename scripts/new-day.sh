@@ -36,6 +36,11 @@ hours: 0
 ## Lessons learned
 
 -
+
+## Cards
+
+<!-- One line per fact: "- question :: answer". For cloze: "- cloze :: text with {{c1::hidden part}}".
+     Inline math with $...$. Extracted into an Anki deck by scripts/make_deck.py. -->
 EOF
 
 echo "Created ${NOTE}"

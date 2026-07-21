@@ -31,6 +31,9 @@ fi
 # 2. Update data/log.json from the note's frontmatter.
 python3 scripts/update_log.py "${DATE}"
 
+# 2b. Rebuild the Anki deck from all notes' card lines.
+python3 scripts/make_deck.py || echo "Deck build failed (is genanki installed?) — continuing."
+
 # 3. Commit and push.
 git add -A
 if git diff --cached --quiet; then
