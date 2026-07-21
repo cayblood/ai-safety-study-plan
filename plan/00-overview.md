@@ -8,7 +8,7 @@ A structured self-study program for pivoting into AI safety research, targeting 
 
 | Track | Time | Content |
 |---|---|---|
-| [ML Foundations](plan.html?doc=01-ml-foundations) | 2 hrs/day (daytime) | Math Academy — Foundations of Machine Learning sequence |
+| [ML Foundations](plan.html?doc=01-ml-foundations) | 2 hrs/day (daytime) | Math Academy — Mathematical Foundations I–III → Mathematics for ML |
 | [Mechanistic Interpretability](plan.html?doc=02-mech-interp) | 2 hrs/day (daytime) | ARENA → mini-projects → public research write-ups |
 | [Philosophy](plan.html?doc=03-philosophy) | 1 hr/day (evening) | Primary texts from classical foundations to AI-safety ethics, plus a human-flourishing/autonomy module (Cosmos Institute) |
 
