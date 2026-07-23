@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 # Wrap up a study day: build the timelapse, update the log index,
 # commit + push, and optionally post to X.
-# Usage: scripts/end-day.sh [date]   (defaults to today)
+# Usage: scripts/end-day.sh [--no-timelapse] [date]   (defaults to today)
 #
 # Expects notes/<date>.md to exist with frontmatter `summary:` and
 # `hours:` filled in. The timelapse step is skipped gracefully if no
-# raw recording exists.
+# raw recording exists, or explicitly with --no-timelapse.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-DATE="${1:-$(date +%F)}"
+TIMELAPSE=1
+DATE=""
+for arg in "$@"; do
+  case "$arg" in
+    --no-timelapse|-n) TIMELAPSE=0 ;;
+    *) DATE="$arg" ;;
+  esac
+done
+DATE="${DATE:-$(date +%F)}"
 NOTE="notes/${DATE}.md"
 
 if [[ ! -f "${NOTE}" ]]; then
@@ -17,8 +25,10 @@ if [[ ! -f "${NOTE}" ]]; then
   exit 1
 fi
 
-# 1. Timelapse (skip if no raw footage).
-if ls recordings/${DATE}-raw.* >/dev/null 2>&1; then
+# 1. Timelapse (skip if disabled or no raw footage).
+if [[ "${TIMELAPSE}" == "0" ]]; then
+  echo "Timelapse disabled (--no-timelapse)."
+elif ls recordings/${DATE}-raw.* >/dev/null 2>&1; then
   if [[ ! -f "media/${DATE}.mp4" ]]; then
     scripts/make-timelapse.sh "${DATE}"
   else
